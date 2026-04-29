@@ -64,14 +64,14 @@ public class NavigationGUI extends JFrame {
         p.setBackground(BG_CARD);
         p.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, ACCENT_TEAL));
         p.setPreferredSize(new Dimension(0, 64));
-        JLabel title = new JLabel("  🗺  DEHRADUN NAVIGATOR");
+        JLabel title = new JLabel("DEHRADUN NAVIGATOR");
         title.setFont(new Font("Monospaced", Font.BOLD, 20));
         title.setForeground(ACCENT_TEAL);
         JLabel sub = new JLabel("Shortest · Fastest · Least Traffic   ");
         sub.setFont(new Font("Monospaced", Font.PLAIN, 12));
         sub.setForeground(TEXT_MUTED);
         p.add(title, BorderLayout.WEST);
-        p.add(sub,   BorderLayout.EAST);
+        p.add(sub,BorderLayout.EAST);
         return p;
     }
     private JSplitPane buildCenter() {
