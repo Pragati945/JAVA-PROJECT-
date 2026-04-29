@@ -10,21 +10,21 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 public class NavigationGUI extends JFrame {
-    private static final Color BG_DARK      = new Color(13, 17, 28);
-    private static final Color BG_CARD      = new Color(22, 29, 46);
-    private static final Color BG_INPUT     = new Color(30, 40, 62);
-    private static final Color ACCENT_TEAL  = new Color(0, 210, 190);
+    private static final Color BG_DARK = new Color(13, 17, 28);
+    private static final Color BG_CARD = new Color(22, 29, 46);
+    private static final Color BG_INPUT = new Color(30, 40, 62);
+    private static final Color ACCENT_TEAL = new Color(0, 210, 190);
     private static final Color ACCENT_AMBER = new Color(255, 180, 50);
-    private static final Color ACCENT_RED   = new Color(255, 80, 80);
-    private static final Color TEXT_PRIMARY  = new Color(220, 230, 255);
-    private static final Color TEXT_MUTED    = new Color(120, 140, 175);
-    private static final Color BORDER_COLOR  = new Color(40, 55, 85);
+    private static final Color ACCENT_RED = new Color(255, 80, 80);
+    private static final Color TEXT_PRIMARY = new Color(220, 230, 255);
+    private static final Color TEXT_MUTED = new Color(120, 140, 175);
+    private static final Color BORDER_COLOR = new Color(40, 55, 85);
     private Graph  graph;
     private Map<Integer, Location> cityMap;
-    private CityDAO  cityDAO;
-    private EdgeDAO  edgeDAO;
-    private JComboBox<String>  cbSource, cbDest;
-    private JComboBox<String>  cbStrategy;
+    private CityDAO cityDAO;
+    private EdgeDAO edgeDAO;
+    private JComboBox<String> cbSource, cbDest;
+    private JComboBox<String> cbStrategy;
     private JTextArea taResult;
     private JLabel lblStatus;
     private GraphPanel graphPanel;
@@ -48,14 +48,13 @@ public class NavigationGUI extends JFrame {
         for (Location loc : cityMap.values()) graph.addLocation(loc);
         List<Edge> edges = edgeDAO.getAllEdges(cityMap);
         for (Edge e : edges)
-            graph.addEdge(e.getSource(), e.getDestination(),
-                          e.getDistance(), e.getTime(), e.getTraffic());
+            graph.addEdge(e.getSource(), e.getDestination(),e.getDistance(), e.getTime(), e.getTraffic());
     }
     private void buildUI() {
         JPanel root = new JPanel(new BorderLayout(0, 0));
         root.setBackground(BG_DARK);
-        root.add(buildHeader(),    BorderLayout.NORTH);
-        root.add(buildCenter(),    BorderLayout.CENTER);
+        root.add(buildHeader(), BorderLayout.NORTH);
+        root.add(buildCenter(), BorderLayout.CENTER);
         root.add(buildStatusBar(), BorderLayout.SOUTH);
         setContentPane(root);
     }
@@ -147,9 +146,9 @@ public class NavigationGUI extends JFrame {
         JPanel card = card("ADD EDGE");
         styleCombo(edgeFromCombo);
         styleCombo(edgeToCombo);
-        JTextField tfDist  = styledField("Distance (km)");
-        JTextField tfTime  = styledField("Time (min)");
-        JTextField tfTraf  = styledField("Traffic factor");
+        JTextField tfDist = styledField("Distance (km)");
+        JTextField tfTime = styledField("Time (min)");
+        JTextField tfTraf = styledField("Traffic factor");
         card.add(label("From"));  card.add(edgeFromCombo);
         card.add(Box.createVerticalStrut(4));
         card.add(label("To"));    card.add(edgeToCombo);
@@ -164,7 +163,7 @@ public class NavigationGUI extends JFrame {
         btn.addActionListener(e -> {
             try {
                 String fromName = (String) edgeFromCombo.getSelectedItem();
-                String toName   = (String) edgeToCombo.getSelectedItem();
+                String toName = (String) edgeToCombo.getSelectedItem();
                 if (fromName == null || toName == null || fromName.equals(toName)) {
                     status("Select two different locations.", ACCENT_RED); return;
                 }
@@ -187,7 +186,7 @@ public class NavigationGUI extends JFrame {
         return card;
     }
     private JComboBox<String> edgeFromCombo = new JComboBox<>();
-    private JComboBox<String> edgeToCombo   = new JComboBox<>();
+    private JComboBox<String> edgeToCombo = new JComboBox<>();
     private JPanel buildResultCard() {
         JPanel card = card("RESULT");
         card.setPreferredSize(new Dimension(360, 140));
@@ -224,12 +223,12 @@ public class NavigationGUI extends JFrame {
         sp.setPreferredSize(new Dimension(700, 160));
         JLabel lbl1 = sectionLabel("GRAPH VIEW");
         JLabel lbl2 = sectionLabel("EDGE TABLE");
-        p.add(lbl1,       BorderLayout.NORTH);
+        p.add(lbl1,BorderLayout.NORTH);
         p.add(graphPanel, BorderLayout.CENTER);
         JPanel bottom = new JPanel(new BorderLayout(0, 4));
         bottom.setBackground(BG_DARK);
         bottom.add(lbl2, BorderLayout.NORTH);
-        bottom.add(sp,   BorderLayout.CENTER);
+        bottom.add(sp, BorderLayout.CENTER);
         p.add(bottom, BorderLayout.SOUTH);
         return p;
     }
@@ -248,7 +247,7 @@ public class NavigationGUI extends JFrame {
         String srcName  = (String) cbSource.getSelectedItem();
         String dstName  = (String) cbDest.getSelectedItem();
         if (srcName == null || dstName == null) { status("Select source and destination.", ACCENT_RED); return; }
-        if (srcName.equals(dstName))            { status("Source and destination cannot be the same.", ACCENT_RED); return; }
+        if (srcName.equals(dstName)) { status("Source and destination cannot be the same.", ACCENT_RED); return; }
         Location src = findByName(srcName);
         Location dst = findByName(dstName);
         if (src == null || dst == null) { status("Location not found in graph.", ACCENT_RED); return; }
@@ -260,9 +259,7 @@ public class NavigationGUI extends JFrame {
         taResult.setText(sb.toString().trim());
         taResult.setCaretPosition(0);
         List<Location> highlightPath = null;
-        RouteStrategy primary = strat == 1 ? new FastestPathStrategy()
-                              : strat == 2 ? new LeastTrafficStrategy()
-                              : new ShortestPathStrategy();
+        RouteStrategy primary = strat == 1 ? new FastestPathStrategy() : strat == 2 ? new LeastTrafficStrategy(): new ShortestPathStrategy();
         RouteResult rr = primary.calculateRoute(graph, src, dst);
         if (rr != null && rr.getPath() != null && rr.getPath().size() > 1)
             highlightPath = rr.getPath();
@@ -466,7 +463,7 @@ cb.setEditor(new BasicComboBoxEditor() {
         table.setShowGrid(true);
     }
     private class GraphPanel extends JPanel {
-        private List<Location>     highlightPath;
+        private List<Location> highlightPath;
         private Map<Location, Point> positions;
         private static final int   NODE_R = 18;
         GraphPanel() {
