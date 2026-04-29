@@ -25,7 +25,7 @@ public class CityDAO
         return map;
     }
 
-    // Returns the new auto-generated ID, or -1 on failure
+   
     public int insertCity(String name) 
     {
         String sql = "INSERT INTO cities (name) VALUES (?)";
